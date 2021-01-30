@@ -1,5 +1,4 @@
 import fetch from 'node-fetch';
-import { Response } from '@types/node-fetch';
 import { parse } from 'node-html-parser';
 
 export default class Page {
@@ -18,7 +17,7 @@ export default class Page {
   private static async getContent(url: string): Promise<string> {
     try {
       return await fetch(url)
-        .then((response: Response): Promise<string> => response.text());
+        .then((response) => response.text());
     } catch (e) {
       throw new Error(`Failed to fetch url ${url}:\n ${e}`);
     }
@@ -68,7 +67,7 @@ export default class Page {
     });
   }
 
-  public async getTopNWords(n: number): Promise<[string, number][]> {
+  public async getTopNWords(n: number): Promise<string[]> {
     try {
       await this.parseContent();
     } catch (e) {
@@ -76,6 +75,7 @@ export default class Page {
     }
     return Object.entries(this.wordsHash)
       .sort((first, second) => second[1] - first[1])
+      .map((el) => el[0])
       .slice(0, n);
   }
 }
