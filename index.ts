@@ -1,6 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import path from 'path';
+import pug from 'pug';
+import pdf from 'html-pdf';
 
 import Page from './src/Page';
 
@@ -29,7 +31,26 @@ app.post('/gettop', (req, res, next) => {
     urls.map(async (url: string) => (
       { [url]: await new Page(url).getTopNWords(3) })),
   )
-    .then(res.send)
+    .then(async (r) => {
+      const template = await pug.renderFile('./views/stats.pug', { data: r });
+      const options = {
+        height: '11.25in',
+        width: '8.5in',
+        header: {
+          height: '20mm',
+        },
+        footer: {
+          height: '20mm',
+        },
+      };
+      // eslint-disable-next-line consistent-return
+      pdf.create(template, options).toStream((err, stream): void => {
+        if (err) return res.end(err.stack);
+        res.setHeader('Content-type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'attachment; filename="stats.pdf"');
+        stream.pipe(res);
+      });
+    })
     .catch(next);
 });
 
