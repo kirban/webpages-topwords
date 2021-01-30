@@ -1,0 +1,11 @@
+[name='urlsInput'] {
+  width: 20rem;
+  margin-right: 1rem;
+  border-radius: 1rem;
+  border: 1px solid;
+  padding: 0.5rem;
+}
+
+[name='urlsInput']:focus {
+  outline: none;
+}
