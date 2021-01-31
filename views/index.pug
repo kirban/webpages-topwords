@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  form#gettop(action="/gettop", method="POST", enctype="application/json", target="_blank")
+    input(type="text", name="urlsInput", placeholder="Введите ссылки через запятую" required="true")
+    input(type="submit", value="Send")
+  

@@ -1,0 +1,6 @@
+table(style="border: 1px solid")
+  each obj in data
+    tr
+      td(style="border: 1px solid") #{Object.keys(obj)[0]}
+      each word in obj[Object.keys(obj)[0]]
+        td(style="border: 1px solid") #{word}
